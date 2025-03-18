@@ -1,6 +1,6 @@
 FROM eclipse-temurin:11.0.17_8-jre
 WORKDIR /eventsim_app
 
-COPY ./eventsim.sh /eventsim_app/eventsim.sh
-COPY ./bin/slf4j-simple-1.7.3.jar /eventsim_app/slf4j-simple-1.7.3.jar
+COPY ./scripts/eventsim.sh /eventsim_app/eventsim.sh
+COPY ./bin/eventsim-assembly-2.0.jar /eventsim_app/eventsim-assembly-2.0.jar
 ENTRYPOINT ["./eventsim.sh"]

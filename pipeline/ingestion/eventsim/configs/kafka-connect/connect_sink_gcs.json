@@ -13,7 +13,7 @@
 		"file.name.prefix": "raw/",
 		"file.name.timestamp.timezone": "UTC",
 		"file.name.timestamp.source": "wallclock",
-		"file.name.template": "y={{timestamp:unit=yyyy}}/m={{timestamp:unit=MM}}/d={{timestamp:unit=dd}}/H={{timestamp:unit=HH}}/{{topic}}-{{partition:padding=true}}-{{start_offset:padding=true}}.gz",
+		"file.name.template": "{{topic}}/y={{timestamp:unit=yyyy}}/m={{timestamp:unit=MM}}/d={{timestamp:unit=dd}}/H={{timestamp:unit=HH}}/{{partition:padding=true}}-{{start_offset:padding=true}}.gz",
 		"key.converter": "org.apache.kafka.connect.storage.StringConverter",
 		"_key.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
 		"key.converter.schemas.enable": false,

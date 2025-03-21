@@ -1,0 +1,4 @@
+FROM confluentinc/cp-kafka-connect:7.9.0
+
+RUN wget https://github.com/Aiven-Open/cloud-storage-connectors-for-apache-kafka/releases/download/v3.2.0/gcs-sink-connector-for-apache-kafka-3.2.0.tar && \
+    tar -xvf gcs-sink-connector-for-apache-kafka-3.2.0.tar --directory /usr/share/confluent-hub-components/

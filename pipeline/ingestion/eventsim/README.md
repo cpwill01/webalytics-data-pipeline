@@ -35,4 +35,4 @@ Note for step 3: if you are not running the containers on a Google Compute VM, y
 ```sh
 GOOGLE_APPLICATION_CREDENTIALS=/.google/credentials/my-creds.json
 ```
-followed adding `-v path/to/google/credentials.json:/.google/credentials/my-creds.json` to the command in step 3.
+followed by adding `-v path/to/google/credentials.json:/.google/credentials/my-creds.json` to the command in step 3.

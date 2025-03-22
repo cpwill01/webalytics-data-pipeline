@@ -11,7 +11,7 @@ import pyarrow.csv
 import pyarrow.parquet
 import requests
 
-from commons import upload_to_gcs
+from google.cloud import storage
 
 LOCATION_DATA_URL = "https://download.geonames.org/export/zip/US.zip"
 LOCATION_DATA_FILENAME = "US.txt"
@@ -34,6 +34,11 @@ def main(args):
         upload_to_gcs(args.bucket_name, f, args.outfile_name)
     logger.info(f"Saved location_file to gs://{args.bucket_name}/{args.outfile_name}")
 
+def upload_to_gcs(bucket_name, source_file, destination_blob_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_file(source_file)
 
 def convert_to_parquet(f):
     parse_options = pyarrow.csv.ParseOptions(delimiter=b"\t")
@@ -46,13 +51,12 @@ def convert_to_parquet(f):
     result.seek(0)
     return result
 
-
 if __name__ == '__main__':
     
-    parser = argparse.ArgumentParser(description='Ingest locaitons data into GCS bucket')
+    parser = argparse.ArgumentParser(description='Ingest location data into GCS bucket')
 
-    parser.add_argument('-d', '--destination-file-name', nargs='+',
+    parser.add_argument('bucket-name', required=True, help='name of gcs bucket to save to')
+    parser.add_argument('destination-file-name', required=True,
                         help='name of file to be saved on gcs; note this can include folders and should include extension e.g. myfolder/xyz.csv')
-    parser.add_argument('-b', '--bucket-name', required=True, help='name of gcs bucket to save to')
 
     main(parser.parse_args())

@@ -30,7 +30,7 @@ def main(args):
     # extract and convert file to parquet, then upload
     z = zipfile.ZipFile(io.BytesIO(r.content))
     with z.open(LOCATION_DATA_FILENAME) as f:
-        f = convert_to_parquet(f)
+        f = convert_to_parquet(f, b"\t", COLUMN_NAMES, COLUMN_NAMES[:7])
         upload_to_gcs(args.bucket_name, f, args.outfile_name)
     logger.info(f"Saved location_file to gs://{args.bucket_name}/{args.outfile_name}")
 
@@ -40,10 +40,10 @@ def upload_to_gcs(bucket_name, source_file, destination_blob_name):
     blob = bucket.blob(destination_blob_name)
     blob.upload_from_file(source_file)
 
-def convert_to_parquet(f):
-    parse_options = pyarrow.csv.ParseOptions(delimiter=b"\t")
-    read_options = pyarrow.csv.ReadOptions(column_names=COLUMN_NAMES)
-    convert_options = pyarrow.csv.ConvertOptions(include_columns=COLUMN_NAMES[:7])
+def convert_to_parquet(f, delimiter, column_names, include_columns):
+    parse_options = pyarrow.csv.ParseOptions(delimiter=delimiter)
+    read_options = pyarrow.csv.ReadOptions(column_names=column_names)
+    convert_options = pyarrow.csv.ConvertOptions(include_columns=include_columns)
     tbl = pyarrow.csv.read_csv(f, parse_options=parse_options, read_options=read_options,
                                 convert_options=convert_options)
     result = io.BytesIO()

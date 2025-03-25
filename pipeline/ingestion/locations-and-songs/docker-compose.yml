@@ -1,0 +1,12 @@
+services:
+  ingest:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    command:
+      - ${GCS_BUCKET_NAME}
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/.google/credentials/key.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/.google/credentials/key.json
+      - PYTHONUNBUFFERED=1

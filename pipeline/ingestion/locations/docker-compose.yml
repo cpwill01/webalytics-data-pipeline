@@ -1,8 +1,0 @@
-services:
-  location_data_ingest:
-    build: 
-      context: .
-      dockerfile: ./Dockerfile
-    command:
-      - ${GCS_BUCKET_NAME}
-      - ${LOCATION_DATA_DEST_FILE_NAME:-locations.parquet}

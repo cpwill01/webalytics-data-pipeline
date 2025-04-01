@@ -2,5 +2,73 @@ version: 2
 
 models:
   - name: dim_songs
+    description: >
+      Contains information on tracks, uniquely identified by a track_id.
+    columns:
+      - name: track_id
+        data_type: string
+        description: Primary key for this table, corresponding to a unique track
+        tests:
+          - unique
+          - not_null
+
+      - name: artist
+        data_type: string
+        description: Name(s) of the artist(s) whom this track is credited to.
+        tests:
+          - not_null:
+              severity: warn
+
+      - name: title
+        data_type: string
+        description: Title of the track.
+        tests:
+          - not_null:
+              severity: warn
+
+      - name: duration
+        data_type: float
+        description: Duration of the song.
+        tests:
+          - not_null:
+              severity: warn
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+              severity: warn
 
   - name: dim_locations
+    description: >
+      Contains information on locations identified by a postal code.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - country_code
+            - postal_code
+          severity: error
+    columns:
+      - name: country_code
+        data_type: string
+        description: The 2-letter ISO 3166-1 alpha-2 code of the country corresponding to the postal code.
+        tests:
+          - not_null:
+              severity: error
+
+      - name: postal_code
+        data_type: string
+        description: The postal code in the standard format of the country (e.g. 5-digit string of numbers for US)
+        tests:
+          - not_null:
+              severity: error
+
+      - name: city
+        data_type: string
+        description: Name of the city corresponding to the postal code.
+
+      - name: state
+        data_type: string
+        description: Name of the state corresponding to the postal code.
+
+      - name: state_code
+        data_type: string
+        description: The 2-letter code for the state.

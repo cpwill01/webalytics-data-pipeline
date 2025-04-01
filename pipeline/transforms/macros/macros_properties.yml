@@ -1,0 +1,14 @@
+version: 2
+
+macros:
+  - name: standardise_postal_code
+    description: >
+      This macro returns the postal code as a string in the standard format of the specified country.
+    arguments:
+      - name: postal_code
+        type: int or string
+      - name: country_code
+        type: string
+        description: >
+          The 2-letter country code (ISO 3166-1 alpha-2 code) identifying the country 
+          that the postal_code belongs to.

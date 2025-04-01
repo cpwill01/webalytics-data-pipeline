@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: web_events_dataset
+    database: decamp-450109
+    loader: GCS
+  
+    tables:
+      - name: locations_ext
+        description: "External table of Locations data, stored as parquet in Cloud Storage"
+        external:
+          location: 'gs://web-events-bucket/raw/flat_files/locations.parquet'
+          options:
+            format: parquet
+      - name: songs_ext
+        description: "External table of Songs data, stored as parquet in Cloud Storage"
+        external:
+          location: 'gs://web-events-bucket/raw/flat_files/songs.parquet'
+          options:
+            format: parquet

@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: dim_songs
+
+  - name: dim_locations

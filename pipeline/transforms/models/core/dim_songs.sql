@@ -6,4 +6,4 @@ SELECT
     title,
     ROUND(duration, 2) AS duration
 FROM
-    {{ source('web_events_dataset', 'songs_ext') }}
+    {{ source(env_var('DBT_BIGQUERY_DATASET'), 'songs_ext') }}

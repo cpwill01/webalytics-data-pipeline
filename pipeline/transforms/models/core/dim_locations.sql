@@ -7,4 +7,4 @@ SELECT
     state,
     CAST(state_code AS STRING) AS state_code
 FROM
-    {{ source('web_events_dataset', 'locations_ext') }}
+    {{ source(env_var('DBT_BIGQUERY_DATASET'), 'locations_ext') }}

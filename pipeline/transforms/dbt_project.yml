@@ -40,3 +40,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 #     # Applies to all files under models/example/
 #     example:
 #       +materialized: table
+
+# The default time zone to use for dbt-date package
+vars:
+    "dbt_date:time_zone": "UTC"

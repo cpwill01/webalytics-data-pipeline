@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: dim_users
+    description: >
+      Contains information on users, including registration time, name and user tier level.

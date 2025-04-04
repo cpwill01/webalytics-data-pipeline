@@ -1,6 +1,7 @@
 {{ config(materialized='table') }}
 
 SELECT
+    {{ dbt_utils.generate_surrogate_key(["country_code", "postal_code"]) }} as location_id,
     country_code,
     {{ standardise_postal_code("postal_code", "country_code") }} AS postal_code,
     city,

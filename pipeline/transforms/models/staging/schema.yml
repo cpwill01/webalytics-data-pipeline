@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_users
+    description: >
+      Staging table for user data, including name, registration time and initial user tier level.
+
+  - name: stg_status_change_events
+    description: >
+      Staging table for status change events, which refer to a user upgrading / downgrading
+      their user tier level.

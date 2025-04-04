@@ -12,3 +12,6 @@ macros:
         description: >
           The 2-letter country code (ISO 3166-1 alpha-2 code) identifying the country 
           that the postal_code belongs to.
+  - name: get_value_from_query
+    description: >
+      This macro returns a value from a simple select query. The select query must return a single value.

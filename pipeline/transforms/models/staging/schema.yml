@@ -4,8 +4,91 @@ models:
   - name: stg_users
     description: >
       Staging table for user data, including name, registration time and initial user tier level.
+      This table is built incrementally by adding new data at each run.
+    columns:
+      - name: event_datetime
+        data_type: timestamp
+        description: The time when user info was emitted from the source application.
+
+      - name: date
+        data_type: date
+        description: The date field in the hive partition of the external source.
+
+      - name: h
+        data_type: integer
+        description: The date field in the hive partition of the external source.
+
+      - name: user_id
+        data_type: integer
+        description: The unique id of the user. Primary key of this table.
+        tests:
+          - not_null:
+              severity: error
+          - unique:
+              severity: error
+
+      - name: first_name
+        data_type: string
+        description: The first name of the user.
+
+      - name: last_name
+        data_type: string
+        description: The last name of the user.
+
+      - name: gender
+        data_type: string
+        description: The gender of the user.
+
+      - name: level
+        data_type: string
+        description: The initial level of the user at the time of registration.
+        tests:
+          - accepted_values:
+              values:
+                - "free"
+                - "paid"
+              severity: error
+
+      - name: registration_datetime
+        data_type: timestamp
+        description: The time when the user registered.
 
   - name: stg_status_change_events
     description: >
       Staging table for status change events, which refer to a user upgrading / downgrading
-      their user tier level.
+      their user subscription level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - event_datetime
+            - user_id
+          severity: error
+
+    columns:
+      - name: event_datetime
+        data_type: timestamp
+        description: The time when status change event occurred in the source application.
+
+      - name: date
+        data_type: date
+        description: The date field in the hive partition of the external source.
+
+      - name: h
+        data_type: integer
+        description: The date field in the hive partition of the external source.
+
+      - name: user_id
+        data_type: integer
+        description: The unique id of the user. 
+
+      - name: prev_level
+        data_type: string
+        description: >
+          The subscription level of the user prior to this status change event taking place.
+          For example, prev_level="free" means that this status change event is an upgrade.
+        tests:
+          - accepted_values:
+              values:
+                - "free"
+                - "paid"
+              severity: error

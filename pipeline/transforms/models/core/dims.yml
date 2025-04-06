@@ -47,3 +47,24 @@ models:
       - name: row_expiry_datetime
         data_type: timestamp
         description: The time at which this row expires (i.e., the user changes subscription level)
+
+  - name: dim_pages
+    description: >
+      Contains information on pages, including page name and category/function.
+    config:
+      tags: "dimension"
+    columns:
+      - name: pk_page
+        data_type: string
+        description: Primary key for this table, representing a page of the application.
+
+      - name: page_name
+        data_type: string
+        description: The name of the page.
+
+      - name: page_category
+        data_type: string
+        description: >
+          The category of the given page, which can be one of the following:
+          'Platform Information', 'Landing', 'Registration', 'Customisation', 'Streaming',
+          'Advertising', 'Error', 'Authentication', 'Subscription', 'UNKNOWN'

@@ -56,3 +56,16 @@ sources:
               data_type: date
             - name: H
               data_type: integer
+
+      - name: page_view_events_ext
+        description: "External table of page view events, stored as gz-compressed json in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/page_view_events/*"
+          options:
+            format: json
+            hive_partition_uri_prefix: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/page_view_events/"
+          partitions:
+            - name: date
+              data_type: date
+            - name: H
+              data_type: integer

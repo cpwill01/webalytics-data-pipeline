@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key = ['event_datetime', 'user_id'],
+    unique_key = ['event_datetime', 'user_id', 'item_in_session'],
     partition_by={
       "field": "event_datetime",
       "data_type": "timestamp",
@@ -21,14 +21,17 @@ SELECT
     COALESCE(city, "NO CITY") AS city,
     COALESCE(state, "NO STATE") AS state,
     level,
-    song,
-    artist,
-    duration
+    sessionid AS session_id,
+    iteminsession AS item_in_session,
+    page,
+    TRIM(useragent, '"') AS user_agent,
+    ad_revenue
 FROM
-    {{ source(env_var('DBT_BIGQUERY_DATASET'), 'listen_events_ext') }}
+    {{ source(env_var('DBT_BIGQUERY_DATASET'), 'page_view_events_ext') }}
+WHERE auth = 'Logged In'
 {% if is_incremental() %}
 
-WHERE date >= "{{ max_date }}"
+    AND date >= "{{ max_date }}"
     AND h >= {{ max_hour }}
     AND {{ dbt_date.from_unixtimestamp("ts", format="milliseconds") }} > (
         SELECT COALESCE(MAX(event_datetime),'1900-01-01') - INTERVAL 10 MINUTE FROM {{ this }} 

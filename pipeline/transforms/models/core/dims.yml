@@ -7,6 +7,8 @@ models:
       Note: a new row is created for each user whenever the user's subscription level changes. 
       Each row has a row_effective_datetime and row_expiry_datetime between which the user has 
       the subscription level stated in the row.
+    config:
+      tags: "dimension"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

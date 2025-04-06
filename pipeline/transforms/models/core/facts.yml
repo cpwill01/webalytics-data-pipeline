@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fact_listen_events
+    description: >
+      Each row represents a user listening to a song at a specific time.
+    config:
+      tags: "fact"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - event_datetime
+            - pk_user
+          severity: error
+    columns:
+      - name: event_datetime
+        data_type: timestamp
+        description: The time when the user starts listening to this song.
+
+      - name: pk_user
+        data_type: string
+        description: Foreign key referencing the user dimension for this listen event.
+        tests:
+          - relationships:
+              field: pk_user
+              to: ref('dim_users')
+
+      - name: pk_song
+        data_type: string
+        description: Foreign key referencing the song dimension for this listen event.
+        tests:
+          - relationships:
+              field: pk_song
+              to: ref('dim_songs')
+
+      - name: pk_location
+        data_type: string
+        description: Foreign key referencing the user dimension for this listen event.
+        tests:
+          - relationships:
+              field: pk_location
+              to: ref('dim_locations')

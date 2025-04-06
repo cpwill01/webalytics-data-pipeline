@@ -1,9 +1,17 @@
 {{ config(materialized='table') }}
 
+WITH distinct_songs AS (
+    SELECT DISTINCT
+        artist,
+        title,
+        duration,
+        genre
+    FROM
+        {{ source(env_var('DBT_BIGQUERY_DATASET'), 'songs_ext') }}
+)
+
 SELECT
-    CAST(track_id AS STRING) AS track_id,
-    artist,
-    title,
-    ROUND(duration, 2) AS duration
-FROM
-    {{ source(env_var('DBT_BIGQUERY_DATASET'), 'songs_ext') }}
+    {{ dbt_utils.generate_surrogate_key(["artist", "title", "duration"]) }}
+        AS pk_song,
+    *
+FROM distinct_songs

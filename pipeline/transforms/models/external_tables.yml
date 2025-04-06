@@ -4,7 +4,8 @@ sources:
   - name: "{{ env_var('DBT_BIGQUERY_DATASET') }}"
     database: "{{ env_var('DBT_GCP_PROJECT') }}"
     loader: GCS
-
+    tags: ["ext_sources"]
+    
     tables:
       - name: locations_ext
         description: "External table of Locations data, stored as parquet in Cloud Storage"

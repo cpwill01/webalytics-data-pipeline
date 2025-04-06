@@ -1,4 +1,7 @@
-{{ config(materialized='incremental') }}
+{{ config(
+    materialized='incremental',
+    unique_key = ['event_datetime', 'user_id'])
+ }}
 {% if is_incremental() %}
     {%- set max_date =  get_value_from_query("COALESCE(MAX(date),'1900-01-01')", this) -%}
     {%- set max_hour = get_value_from_query("COALESCE(MAX(h),0)", this) -%}

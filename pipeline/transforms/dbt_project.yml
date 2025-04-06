@@ -40,6 +40,12 @@ clean-targets:         # directories to be removed by `dbt clean`
 #     # Applies to all files under models/example/
 #     example:
 #       +materialized: table
+models:
+  webalytics_pipeline_transforms:
+    staging:
+      +docs:
+        node_color: "#cd7f32"
+
 
 # The default time zone to use for dbt-date package
 vars:

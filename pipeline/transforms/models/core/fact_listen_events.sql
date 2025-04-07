@@ -8,6 +8,12 @@
     }
 ) }}
 
+{% if is_incremental() %}
+    {%- set max_event_datetime =  get_value_from_query(
+        "COALESCE(MAX(event_datetime),'1900-01-01') - INTERVAL 10 MINUTE", this
+        ) -%}
+{% endif %}
+
 SELECT
     listen.event_datetime,
     users.pk_user,
@@ -29,8 +35,6 @@ LEFT JOIN {{ ref('dim_songs') }} AS songs
         AND listen.duration = songs.duration
 {% if is_incremental() %}
 
-WHERE listen.event_datetime > (
-        SELECT COALESCE(MAX(event_datetime),'1900-01-01') - INTERVAL 10 MINUTE FROM {{ this }} 
-    )
+WHERE listen.event_datetime > "{{ max_event_datetime }}"
 
 {% endif %}

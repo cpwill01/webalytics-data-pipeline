@@ -74,7 +74,7 @@ dim_user_no_pk AS (
         {{ ref('stg_users') }} AS users
     LEFT JOIN {{ ref('stg_status_change_events') }} AS status
         ON users.user_id = status.user_id
-    WHERE status.event_datetime IS NULL 
+    WHERE status.event_datetime IS NULL
         OR status.event_datetime >= users.event_datetime
 )
 

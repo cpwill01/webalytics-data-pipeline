@@ -4,9 +4,9 @@
 
 {% macro standardise_postal_code(postal_code, country_code) -%}
 
-    case {{ country_code }}  
-        when 'US' then LPAD(CAST(postal_code AS STRING), 5, '0')
-        else UPPER(CAST(postal_code AS STRING))
-    end
+    CASE {{ country_code }}  
+        WHEN 'US' THEN LPAD(CAST(postal_code AS STRING), 5, '0')
+        ELSE UPPER(CAST(postal_code AS STRING))
+    END
 
 {%- endmacro %}

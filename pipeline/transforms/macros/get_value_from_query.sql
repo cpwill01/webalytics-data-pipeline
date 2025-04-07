@@ -5,7 +5,7 @@
 {% macro get_value_from_query(selection_arg, table) -%}
     
     {% set sql_statement %}
-        select {{ selection_arg }} from {{ table }}
+        SELECT {{ selection_arg }} FROM {{ table }}
     {% endset %}
 
     {{ return(dbt_utils.get_single_value(sql_statement)) }}

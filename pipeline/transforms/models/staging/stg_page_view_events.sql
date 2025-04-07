@@ -28,13 +28,14 @@ SELECT
     ad_revenue
 FROM
     {{ source(env_var('DBT_BIGQUERY_DATASET'), 'page_view_events_ext') }}
-WHERE auth = 'Logged In'
-{% if is_incremental() %}
-
-    AND date >= "{{ max_date }}"
-    AND h >= {{ max_hour }}
-    AND {{ dbt_date.from_unixtimestamp("ts", format="milliseconds") }} > (
-        SELECT COALESCE(MAX(event_datetime),'1900-01-01') - INTERVAL 10 MINUTE FROM {{ this }} 
+WHERE auth = "Logged In"
+    {% if is_incremental() %}
+    
+        AND date >= "{{ max_date }}"
+        AND h >= {{ max_hour }}
+        AND {{ dbt_date.from_unixtimestamp("ts", format="milliseconds") }} > (
+            SELECT COALESCE(MAX(this_table.event_datetime), "1900-01-01") - INTERVAL 10 MINUTE
+            FROM {{ this }} AS this_table
         )
 
-{% endif %}
+    {% endif %}

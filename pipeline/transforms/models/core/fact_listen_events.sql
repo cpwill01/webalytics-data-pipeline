@@ -26,15 +26,15 @@ LEFT JOIN {{ ref('dim_users') }} AS users
         AND listen.event_datetime >= users.row_effective_datetime
         AND listen.event_datetime < users.row_expiry_datetime
 LEFT JOIN {{ ref('dim_locations') }} AS locations
-    ON listen.city = locations.city 
+    ON listen.city = locations.city
         AND listen.state = locations.state_code
         AND listen.postal_code = locations.raw_postal_code
 LEFT JOIN {{ ref('dim_songs') }} AS songs
-    ON listen.song = songs.title 
+    ON listen.song = songs.title
         AND listen.artist = songs.artist
         AND listen.duration = songs.duration
 {% if is_incremental() %}
 
-WHERE listen.event_datetime > "{{ max_event_datetime }}"
+    WHERE listen.event_datetime > "{{ max_event_datetime }}"
 
 {% endif %}

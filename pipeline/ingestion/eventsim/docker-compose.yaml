@@ -100,7 +100,7 @@ services:
       context: .
       dockerfile: ./Dockerfile.eventsim
     volumes:
-      - ./configs:/eventsim_app/configs
+      - ./configs/eventsim:/eventsim_app/configs
       - ./data:/eventsim_app/data
     command:
       - -c ${EVENTSIM_CONFIG_FILE}

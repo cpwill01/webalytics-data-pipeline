@@ -1,0 +1,71 @@
+version: 2
+
+sources:
+  - name: "{{ env_var('DBT_BIGQUERY_DATASET') }}"
+    database: "{{ env_var('DBT_GCP_PROJECT') }}"
+    loader: GCS
+    tags: ["ext_sources"]
+    
+    tables:
+      - name: locations_ext
+        description: "External table of Locations data, stored as parquet in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/flat_files/locations.parquet"
+          options:
+            format: parquet
+      - name: songs_ext
+        description: "External table of Songs data, stored as parquet in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/flat_files/songs.parquet"
+          options:
+            format: parquet
+      - name: users_ext
+        description: "External table of user info, stored as gz-compressed json in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/user_info/*"
+          options:
+            format: json
+            hive_partition_uri_prefix: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/user_info/"
+          partitions:
+            - name: date
+              data_type: date
+            - name: H
+              data_type: integer
+      - name: status_change_events_ext
+        description: >
+          "External table of status change events (i.e. upgrade/downgrade tier), stored as gz-compressed json in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/status_change_events/*"
+          options:
+            format: json
+            hive_partition_uri_prefix: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/status_change_events/"
+          partitions:
+            - name: date
+              data_type: date
+            - name: H
+              data_type: integer
+      - name: listen_events_ext
+        description: "External table of listen events, stored as gz-compressed json in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/listen_events/*"
+          options:
+            format: json
+            hive_partition_uri_prefix: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/listen_events/"
+          partitions:
+            - name: date
+              data_type: date
+            - name: H
+              data_type: integer
+
+      - name: page_view_events_ext
+        description: "External table of page view events, stored as gz-compressed json in Cloud Storage"
+        external:
+          location: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/page_view_events/*"
+          options:
+            format: json
+            hive_partition_uri_prefix: "gs://{{ env_var('DBT_GCS_BUCKET_NAME') }}/raw/page_view_events/"
+          partitions:
+            - name: date
+              data_type: date
+            - name: H
+              data_type: integer

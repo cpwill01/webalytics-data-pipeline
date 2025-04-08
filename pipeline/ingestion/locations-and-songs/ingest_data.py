@@ -14,21 +14,21 @@ import requests
 
 from google.cloud import storage
 
-LOCATION_DATA_URL = "https://download.geonames.org/export/zip/US.zip"
-LOCATION_SOURCE_FILENAME = "US.txt"
+LOCATION_DATA_URL = "https://github.com/cpwill01/eventsim/raw/refs/heads/main/data/US.txt"
 LOCATION_COLUMN_NAMES = ["Country Code", "Postal Code", "City", "State", "State Code",
                 "Borough/County", "Borough/County Code","NA","NA","lat","long","acc"]
-LOCATION_KEEP_COLS_RANGE = (0,7)
+LOCATION_KEEP_COLS = ["Country Code", "Postal Code", "City", "State", "State Code",
+                "Borough/County", "Borough/County Code"]
 LOCATION_OUTFILE_NAME = "raw/flat_files/locations.parquet"
 
 SONG_DATA_URL = "https://github.com/cpwill01/eventsim/raw/refs/heads/main/data/listen_counts.txt.gz"
-SONG_COLUMN_NAMES = ["Track ID", "Artist", "Title", "Duration", "Listen Count"]
-SONG_KEEP_COLS_RANGE = (0,4)
+SONG_COLUMN_NAMES = ["Track ID", "Artist", "Title", "Duration", "Listen Count", "Genre"]
+SONG_KEEP_COLS = ["Track ID", "Artist", "Title", "Duration", "Genre"]
 SONG_OUTFILE_NAME = "raw/flat_files/songs.parquet"
 
 logger = logging.getLogger(__name__)
 
-def ingest_data(url, compression, col_names, keep_cols_range, bucket_name, outfile_name,
+def ingest_data(url, col_names, keep_cols, bucket_name, outfile_name, compression=None,
         source_file_name=None, source_file_delimiter=b"\t"):
 
     # download location zip file
@@ -40,10 +40,12 @@ def ingest_data(url, compression, col_names, keep_cols_range, bucket_name, outfi
     if compression == "zip":
         z = zipfile.ZipFile(io.BytesIO(r.content))
         with z.open(source_file_name) as f:
-            f = convert_to_parquet(f, source_file_delimiter, col_names, col_names[keep_cols_range[0]:keep_cols_range[1]])
+            f = convert_to_parquet(f, source_file_delimiter, col_names, keep_cols)
     elif compression == "gzip":
         with gzip.open(io.BytesIO(r.content)) as f:
-            f = convert_to_parquet(f, source_file_delimiter, col_names, col_names[keep_cols_range[0]:keep_cols_range[1]])
+            f = convert_to_parquet(f, source_file_delimiter, col_names, keep_cols)
+    else:
+        f = convert_to_parquet(io.BytesIO(r.content), source_file_delimiter, col_names, keep_cols)
     upload_to_gcs(bucket_name, f, outfile_name)
     logger.info(f"Saved file to gs://{bucket_name}/{outfile_name}")
 
@@ -77,7 +79,8 @@ if __name__ == "__main__":
     logger.addHandler(stream_handler)
     logger.info("Arguments received: " + args.__repr__())
 
-    ingest_data(LOCATION_DATA_URL, "zip", LOCATION_COLUMN_NAMES, LOCATION_KEEP_COLS_RANGE, args.bucket_name,
-                LOCATION_OUTFILE_NAME, source_file_name=LOCATION_SOURCE_FILENAME)
+    ingest_data(LOCATION_DATA_URL, LOCATION_COLUMN_NAMES, LOCATION_KEEP_COLS, args.bucket_name,
+                LOCATION_OUTFILE_NAME)
     
-    ingest_data(SONG_DATA_URL, "gzip", SONG_COLUMN_NAMES, SONG_KEEP_COLS_RANGE, args.bucket_name, SONG_OUTFILE_NAME)
+    ingest_data(SONG_DATA_URL, SONG_COLUMN_NAMES, SONG_KEEP_COLS, args.bucket_name, SONG_OUTFILE_NAME,
+                compression="gzip")

@@ -70,7 +70,7 @@ resource "google_compute_instance" "eventsim_kafka_instance" {
 
 #service account for the compute instance
 resource "google_service_account" "eventsim_kafka_sa" {
-  account_id    = "evensim_kafka"
+  account_id    = "evensim-kafka"
   display_name  = "Service Account for eventsim kafka compute instance"
 }
 

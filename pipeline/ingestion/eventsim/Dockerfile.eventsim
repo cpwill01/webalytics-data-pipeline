@@ -3,4 +3,5 @@ WORKDIR /eventsim_app
 
 COPY ./scripts/eventsim.sh /eventsim_app/eventsim.sh
 COPY ./bin/eventsim-assembly-2.0.jar /eventsim_app/eventsim-assembly-2.0.jar
+RUN chmod +x /eventsim_app/eventsim.sh /eventsim_app/eventsim-assembly-2.0.jar
 ENTRYPOINT ["./eventsim.sh"]

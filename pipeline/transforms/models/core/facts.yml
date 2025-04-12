@@ -11,6 +11,7 @@ models:
           combination_of_columns:
             - event_datetime
             - pk_user
+            - pk_song
           severity: error
     columns:
       - name: event_datetime

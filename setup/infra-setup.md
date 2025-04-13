@@ -45,7 +45,7 @@ with reference to the instructions in the DE ZoomCamp course
    `GOOGLE_CREDENTIALS` to the **full path** to your service account json file. Assuming 
 you are using a Linux shell (or git bash on Windows), you can run this:
    ```shell
-   EXPORT GOOGLE_CREDENTIALS='path/to/your/service/account/key.json'
+   export GOOGLE_CREDENTIALS='path/to/your/service/account/key.json'
    ```
    Note: If you're using cmd on Windows, it'll be `set` instead of `export`. On Powershell, the syntax is `$env:GOOGLE_CREDENTIALS="path/to/your/service/account/key.json"`
 3. Initialise terraform:
@@ -75,5 +75,5 @@ you are using a Linux shell (or git bash on Windows), you can run this:
 
 > [!WARNING]  
 > Once you have completed the project, remember to tear down the infrastructure by
-> navigating back to this folder and running `terraform destry`
+> navigating back to the `terraform/for_peer_reviewers` folder and running `terraform destroy`
 > so that you don't incur unnecessary costs.

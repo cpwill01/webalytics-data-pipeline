@@ -113,3 +113,6 @@ After ensuring you have the above, you can follow these instructions in order:
 - **Dashboard**: Looker Studio
 
 ## Acknowledgements
+I started this project as a capstone project for the [free Data Engineering course](https://github.com/DataTalksClub/data-engineering-zoomcamp)
+by [DataTalks.Club](https://datatalks.club/). Huge thanks to them for putting in so much effort into creating the 
+engaging educational content and contributing to the data community.

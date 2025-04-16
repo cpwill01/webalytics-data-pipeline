@@ -22,7 +22,7 @@ SELECT
     COALESCE(city, "NO CITY") AS city,
     COALESCE(state, "NO STATE") AS state,
     level,
-    song,
+    REGEXP_REPLACE(song, r'([^\p{ASCII}]+)|(")', '') AS song,
     artist,
     ROUND(duration, 2) as duration
 FROM

@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key = ['event_datetime', 'pk_user'],
+    unique_key = ['event_datetime', 'pk_user', 'pk_song'],
     partition_by={
       "field": "event_datetime",
       "data_type": "timestamp",

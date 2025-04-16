@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key = ['event_datetime', 'user_id'],
+    unique_key = ['event_datetime', 'user_id', 'song', 'artist'],
     partition_by={
       "field": "event_datetime",
       "data_type": "timestamp",
@@ -24,7 +24,7 @@ SELECT
     level,
     song,
     artist,
-    duration
+    ROUND(duration, 2) as duration
 FROM
     {{ source(env_var('DBT_BIGQUERY_DATASET'), 'listen_events_ext') }}
 {% if is_incremental() %}

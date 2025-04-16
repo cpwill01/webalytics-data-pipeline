@@ -3,7 +3,7 @@
 WITH distinct_songs AS (
     SELECT DISTINCT
         artist,
-        title,
+        REGEXP_REPLACE(title, r'([^\p{ASCII}]+)|(")', '') AS title,
         ROUND(duration, 2) AS duration,
         genre
     FROM

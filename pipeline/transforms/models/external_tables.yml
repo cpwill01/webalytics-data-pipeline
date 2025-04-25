@@ -40,6 +40,39 @@ sources:
           partitions:
             - name: date
               data_type: timestamp
+        columns:
+          - name: lat
+            data_type: float64
+          - name: state
+            data_type: string
+          - name: registration
+            data_type: integer
+          - name: itemInSession
+            data_type: integer
+          - name: city
+            data_type: string
+          - name: userAgent
+            data_type: string
+          - name: firstName
+            data_type: string
+          - name: ts
+            data_type: integer
+          - name: userId
+            data_type: integer
+          - name: lon
+            data_type: float64
+          - name: sessionId
+            data_type: integer
+          - name: level
+            data_type: string
+          - name: auth
+            data_type: string
+          - name: gender
+            data_type: string
+          - name: lastName
+            data_type: string
+          - name: zip
+            data_type: integer
       - name: listen_events_ext
         description: "External table of listen events, stored as gz-compressed json in Cloud Storage"
         external:
@@ -61,3 +94,4 @@ sources:
           partitions:
             - name: date
               data_type: timestamp
+        
